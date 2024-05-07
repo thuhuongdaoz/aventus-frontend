@@ -1,0 +1,35 @@
+.text-center{
+    text-align: center;
+}
+.ml-200{
+    margin-left: 200px;
+}
+.login{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.login-title{
+    margin-left: 200px;
+    margin-bottom:  ;
+}
+.content{
+    width: 600px;
+}
+.error-msg{
+    margin-left: 200px;
+    margin-bottom: 20px;
+    color: #ff6f61;
+}
+.auth-link-wrap{
+    text-align: center;
+    margin-left: 68px;
+    margin-bottom: 30px;
+}
+.auth-link{
+    margin-left: 10px;
+    /* color: #00b14f; */
+    
+}
