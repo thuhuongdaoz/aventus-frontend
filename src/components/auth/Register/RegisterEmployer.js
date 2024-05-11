@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Checkbox, Form, Input, Select } from 'antd';
+
 import axios from 'axios';
 
 
 import "../auth.css";
 
-const onFinish = (values) => {
-    console.log('Success:', values);
-};
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
 
 const tailFormItemLayout = {
     wrapperCol: {
@@ -29,18 +24,19 @@ const tailFormItemLayout = {
 const { Option } = Select;
 const RegisterEmployer = () => {
     const [errorMessage, setErrorMessage] = useState(
-        "Không tìm thấy tài khoản"
+        "error"
     );
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        console.log("o day")
         // Fetch provinces data when component mounts
         axios.get('http://localhost:8080/provinces')
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 setProvinces(response.data);
             })
             .catch(error => {
@@ -50,36 +46,54 @@ const RegisterEmployer = () => {
 
     const handleProvinceChange = (value) => {
         // Fetch districts data based on selected province
-          axios.get(`http://localhost:8080/districts?province=${value}`)
-          .then(response => {
-            setDistricts(response.data);
-            setWards([]); // Reset wards when province changes
-          })
-          .catch(error => {
-            console.error('Error fetching districts:', error);
-          });
-      };
-    
-      const handleDistrictChange = (value) => {
-        console.log("co vao day", value)
+        axios.get(`http://localhost:8080/districts?province=${value}`)
+            .then(response => {
+                setDistricts(response.data);
+                setWards([]); // Reset wards when province changes
+            })
+            .catch(error => {
+                console.error('Error fetching districts:', error);
+            });
+    };
+
+    const handleDistrictChange = (value) => {
         // Fetch wards data based on selected district
         axios.get(`http://localhost:8080/wards?district=${value}`)
-          .then(response => {
-            setWards(response.data);
-          })
-          .catch(error => {
-            console.error('Error fetching wards:', error);
-          });
-      };
+            .then(response => {
+                setWards(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching wards:', error);
+            });
+    };
+
+    const onFinish = async(values) => {
+        try {
+            const response = await axios.post('http://localhost:8080/candidates', values);
+            // console.log('Data posted successfully:', response.data);
+            // setUser(response.data);
+            
+            navigate("/login")
+        } catch (error) {
+            if (error.response) {
+                // Server responded with a status code other than 2xx
+                setErrorMessage(`Error: ${error.response.data}`);
+            }
+        }
+    };
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
     return (
         <>
 
             <div className="login">
-                <div className="content">
+                <div className="login-content">
                     <h1 className="login-title">Đăng kí</h1>
                     {/* <Link className="ml-200" to="/register/employer">Bạn là nhà tuyển dụng</Link> */}
 
-                    <div className="error-msg">{errorMessage}</div>
+                    {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
                     <Form
                         name="basic"
                         labelCol={{
@@ -99,7 +113,7 @@ const RegisterEmployer = () => {
                         autoComplete="off"
                     >   <Form.Item
                         {...tailFormItemLayout}>
-                            <h2>Tài khoản</h2>
+                            <h2 style={{ margin: '0px' }}>Tài khoản</h2>
                         </Form.Item>
                         <Form.Item
                             label="Họ tên"
@@ -164,7 +178,7 @@ const RegisterEmployer = () => {
                         </Form.Item>
                         <Form.Item
                             {...tailFormItemLayout}>
-                            <h2>Thông tin công ty</h2>
+                            <h2 style={{margin: '0' }}>Thông tin công ty</h2>
                         </Form.Item>
 
 
@@ -193,7 +207,7 @@ const RegisterEmployer = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item label="Phường/xã" name="wards" rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}>
+                        <Form.Item label="Phường/xã" name="ward_code" rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}>
                             <Select placeholder="Chọn phường/xã">
                                 {wards.map(ward => (
                                     <Option key={ward.code} value={ward.code}>{ward.name}</Option>
@@ -211,7 +225,7 @@ const RegisterEmployer = () => {
 
                             ]}
                         ><Input /></Form.Item>
-                        
+
                         <Form.Item
                             name="agreement"
                             valuePropName="checked"
@@ -227,7 +241,11 @@ const RegisterEmployer = () => {
                                 Tôi đã đọc và đồng ý <a href="">thỏa thuận</a>
                             </Checkbox>
                         </Form.Item>
-
+                        {/* <Form.Item
+                        {...tailFormItemLayout}
+                    >
+                        {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
+                    </Form.Item> */}
 
                         <Form.Item
                             wrapperCol={{

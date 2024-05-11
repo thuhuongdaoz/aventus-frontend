@@ -1,0 +1,29 @@
+.header{
+    height: 60px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #4096ff;
+    color: white;
+    z-index: 1;
+}
+.left-header{
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+}
+.right-header{
+    display: flex;
+    align-items: center;
+    
+}
+.avatar{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}

@@ -1,24 +1,51 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
 import "./auth.css";
 
-const onFinish = (values) => {
-    console.log('Success:', values);
-};
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
+const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 16,
+        offset: 8,
+      },
+    },
+  };
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState(
-        "Không tìm thấy tài khoản"
+        "error"
     );
+    const navigate = useNavigate();
+    const onFinish = async (values) => {
+        try {
+            const response = await axios.post('http://localhost:8080/auth/login', values);
+            // console.log('khi login:', response.data);
+            // Lưu trữ token vào localStorage
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('role', response.data.role);
+
+            navigate("/");
+        } catch (error) {
+            if (error.response) {
+                // Server responded with a status code other than 2xx
+                setErrorMessage(`Error: ${error.response.data}`);
+            }
+        }
+    };
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
     return (
         <div className="login">
-            <div className="content">
+            <div className="login-content">
                 <h1 className="login-title">Đăng nhập</h1>
-                <div className="error-msg">{errorMessage}</div>
+                {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
                 <Form
                     name="basic"
                     labelCol={{
@@ -77,6 +104,7 @@ const Login = () => {
                     >
                         <Checkbox>Remember me</Checkbox>
                     </Form.Item> */}
+                    
 
 
                     <Form.Item
