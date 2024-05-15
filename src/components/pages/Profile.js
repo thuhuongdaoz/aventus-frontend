@@ -8,7 +8,7 @@ const Profile = () => {
   // console.log(localStorage.getItem('role'))  
   return (
     <>
-      <Header/>
+      {/* <Header/> */}
       {role === "CANDIDATE" ? <ProfileCandidate /> : <ProfileEmployer />}
     </>
   )

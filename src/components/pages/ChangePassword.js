@@ -36,7 +36,7 @@ export default function ChangePassword() {
     };
     return (
         <div>
-            <Header />
+            {/* <Header /> */}
             <div className='change-password'>
                 <div className='change-password-content'>
                     <h1 className='change-password-title'>Đổi mật khẩu</h1>

@@ -28,8 +28,9 @@ const Login = () => {
             // console.log('khi login:', response.data);
             // Lưu trữ token vào localStorage
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.userId);
             localStorage.setItem('role', response.data.role);
-
+            console.log(localStorage.getItem('token'), "a1")
             navigate("/");
         } catch (error) {
             if (error.response) {

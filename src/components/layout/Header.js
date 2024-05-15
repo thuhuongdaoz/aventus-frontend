@@ -82,7 +82,6 @@ export default function Header() {
     // Fetch provinces data when component mounts
     axios.get('http://localhost:8080/users/myInfo', { headers })
       .then(response => {
-        console.log(response.data)
         setUser(response.data)
 
       })

@@ -1,0 +1,16 @@
+.add-job{
+    margin-top: 60px;
+    padding: 32px;
+}
+.add-job-title{
+    margin: 0 0 24px;
+    text-align: center;
+}
+.add-job-form{
+    margin: auto;
+    width: 622px;
+}
+
+.add-job .btn-save{
+    margin-right: 10px;
+}

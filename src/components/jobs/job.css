@@ -1,0 +1,26 @@
+.list-job{
+    margin-top: 60px;
+    padding: 32px 112px;
+    
+} 
+.list-job-title{
+    margin: 0;
+} 
+.add-job-row{
+    display: flex;
+    justify-content: end;
+}
+.list-job .filter{
+    margin-top: 20px;
+    display: flex;
+}
+.list-job .filter-item{
+    margin-right: 14px;
+    flex : 1;
+}
+/* .list-job .search-name {
+    width: 300px;
+} */
+.list-job .job-table{
+    margin-top: 24px;
+}
