@@ -15,7 +15,7 @@ const handleChange = (value) => {
 
 
 
-export default function LIstJob() {
+export default function SearchJob() {
 
 
   const [careers, setCareers] = useState([]);
@@ -65,21 +65,22 @@ export default function LIstJob() {
         console.error('Error fetching degrees:', error);
       });
 
-    axios.get('http://localhost:8080/jobs', {
-      params: {
-        employerId: localStorage.getItem('userId')
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }
-    })
-      .then(response => {
-        console.log(response.data)
-        setJobs(response.data)
-      })
-      .catch(error => {
-        console.error('Error fetching jobs:', error);
-      });
+    // axios.get('http://localhost:8080/jobs', {
+    //   params: {
+    //     employerId: localStorage.getItem('userId')
+    //   },
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //   }
+    // })
+    //   .then(response => {
+    //     console.log(response.data)
+    //     setJobs(response.data)
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching jobs:', error);
+    //   });
+    search();
 
   }, []);
   const onChangeName = (e) => {
@@ -111,7 +112,6 @@ export default function LIstJob() {
 
     };
 
-    params.employerId = localStorage.getItem('userId')
     if (name) params.name = name;
     if (careerId) params.careerId = careerId
     if (degreeId) params.degreeId = degreeId
@@ -142,6 +142,11 @@ export default function LIstJob() {
       key: 'name',
     },
     {
+      title: 'Tên công ty',
+      dataIndex: 'companyName',
+      key: 'companyName',
+    },
+    {
       title: 'Ngành nghề',
       dataIndex: 'career',
       key: 'career',
@@ -163,13 +168,17 @@ export default function LIstJob() {
       key: 'offer',
     },
     {
+      title: 'Địa điểm',
+      dataIndex: 'province',
+      key: 'province',
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
-          <Link to={`/editjob/${record.id}`}>Sửa</Link>
-          <Button type="link" onClick={() => deleteJob(record.id)}>Xoá</Button>
-        </Space>
+        // <Space size="middle">
+          <Link to={`/viewjob/${record.id}`}>Xem</Link>
+        // </Space>
       ),
     },
 
@@ -191,12 +200,11 @@ export default function LIstJob() {
   return (
 
     <div className='list-job'>
-      <h1 className='list-job-title'>Danh sách việc làm</h1>
+      {/* <h1 className='list-job-title'>Danh sách việc làm</h1> */}
       <div className='add-job-row'>
-        <Link to="/addjob">
-          <Button type="primary" size='large'>Thêm việc làm</Button>
+        <Link to="/deepsearchjob">
+          <Button type="primary" size='large'>Trợ giúp tìm kiếm</Button>
         </Link>
-
       </div>
       <div className='filter'>
         <Input className='filter-item search-name' prefix={<SearchOutlined />} placeholder="Tên việc làm" defaultValue={name} onChange={onChangeName} />
@@ -250,11 +258,14 @@ export default function LIstJob() {
           jobs.map(job => ({
             key: job.id,
             id: job.id,
+            companyName : job.employer.companyName,
             name: job.name,
             career: job.career.name,
             degree: job.degree.name,
             experience: job.experience == 0 ? 'Không yêu cầu' : job.experience + ' năm',
-            offer: job.minOffer + " - " + job.maxOffer + " triệu"
+            offer: job.minOffer + " - " + job.maxOffer + " triệu",
+            province : job.ward.district.province.name
+
           }))
           // data
         } />

@@ -16,6 +16,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import './profile.css'
+import Avatar from 'antd/es/avatar/avatar';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -111,7 +112,9 @@ const ProfileCandidate = () => {
       Authorization: `Bearer ${token}`,
     };
     const result = await axios.get(`http://localhost:8080/candidates/myInfo`, { headers });
+    console.log("loadCandidate", result.data)
     setCandidate(result.data);
+    setImageUrl(result.data.avatar)
   };
 
   const handleProvinceChange = (value) => {
@@ -139,12 +142,12 @@ const ProfileCandidate = () => {
   const onFinish = async (values) => {
     try {
       console.log('Update candidate info request', values)
-      console.log('Update candidate info request format', { ...values, dateOfBirth: dayjs(values.dateOfBirth).format('YYYY-MM-DD') })
+      console.log('Update candidate info request format', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null , avatar : imageUrl})
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.put('http://localhost:8080/candidates/myInfo', { ...values, dateOfBirth: dayjs(values.dateOfBirth).format('YYYY-MM-DD') }, { headers });
+      const response = await axios.put('http://localhost:8080/candidates/myInfo', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null , avatar : imageUrl}, { headers });
       console.log('Update candidate info response:', response.data);
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
@@ -166,7 +169,7 @@ const ProfileCandidate = () => {
     if (candidate != null) {
       form.setFieldsValue({
         ...candidate,
-        dateOfBirth: dayjs(candidate.dateOfBirth),
+        dateOfBirth: candidate.dateOfBirth ? dayjs(candidate.dateOfBirth) : candidate.dateOfBirth,
         province_code: candidate.ward?.district?.province?.code,
         district_code: candidate.ward?.district?.code,
         ward_code: candidate.ward?.code,
@@ -206,11 +209,9 @@ const ProfileCandidate = () => {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      console.log(info.file.originFileObj)
-      // getBase64(info.file.originFileObj, (url) => {
-      //   setLoading(false);
-      //   setImageUrl(url);
-      // });
+      // console.log(info.file)
+      setLoading(false);
+      setImageUrl(info.file.response);
     }
   };
   const uploadButton = (
@@ -333,9 +334,9 @@ const ProfileCandidate = () => {
             <Form.Item label="Ảnh đại diện"
               name="avatar">
               <Upload
-                action="http://yourbackend.com/upload" // URL for backend upload API
+                action="http://localhost:8080/upload/avatar" // URL for backend upload API
                 method="post"
-                name="avatar"
+                name="file"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
@@ -344,7 +345,7 @@ const ProfileCandidate = () => {
               >
                 {imageUrl ? (
                   <img
-                    src={imageUrl}
+                    src={"http://localhost:8080" + imageUrl}
                     alt="avatar"
                     style={{
                       width: '100%',

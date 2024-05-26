@@ -18,6 +18,13 @@
     margin-right: 14px;
     flex : 1;
 }
+.popover-item{
+    width: 300px;
+}
+.popover-item .btn-close-popover{
+    margin-top: 16px;
+    width: 100%;
+}
 /* .list-job .search-name {
     width: 300px;
 } */

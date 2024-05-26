@@ -1,7 +1,9 @@
 import React from 'react'
 import Header from '../layout/Header'
 import Content from '../layout/Content'
+import Footer from '../layout/Footer'
 import { Outlet } from 'react-router-dom'
+
 
 
 export default function Home() {
@@ -9,6 +11,7 @@ export default function Home() {
         <div>
            <Header/>
            <Outlet/>
+           {/* <Footer/> */}
         </div>
     )
 }

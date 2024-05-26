@@ -60,6 +60,7 @@ const ProfileEmployer = () => {
   const [wards, setWards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+  const [pictureUrl, setPictureUrl] = useState();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -82,7 +83,10 @@ const ProfileEmployer = () => {
       Authorization: `Bearer ${token}`,
     };
     const result = await axios.get(`http://localhost:8080/employers/myInfo`, { headers });
+    console.log("loadEmployer", result.data)
     setEmployer(result.data);
+    setImageUrl(result.data.avatar)
+    setPictureUrl( result.data.picture)
   };
 
   const handleProvinceChange = (value) => {
@@ -108,13 +112,14 @@ const ProfileEmployer = () => {
       });
   };
   const onFinish = async (values) => {
-    // console.log('k', values)
     try {
+      console.log('Update employer info request', values)
+      console.log('Update employer info request format', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null  , avatar : imageUrl,  picture : pictureUrl})
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.put('http://localhost:8080/employers/myInfo', { ...values, dateOfBirth: dayjs(values.dateOfBirth).format('YYYY-MM-DD') }, { headers });
+      const response = await axios.put('http://localhost:8080/employers/myInfo', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null  , avatar : imageUrl,  picture : pictureUrl}, { headers });
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
       });
@@ -171,11 +176,21 @@ const ProfileEmployer = () => {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      console.log(info.file.originFileObj)
-      // getBase64(info.file.originFileObj, (url) => {
-      //   setLoading(false);
-      //   setImageUrl(url);
-      // });
+      // console.log(info.file)
+      setLoading(false);
+      setImageUrl(info.file.response);
+    }
+  };
+  const handlePictureChange = (info) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      // console.log(info.file)
+      setLoading(false);
+      setPictureUrl(info.file.response);
     }
   };
   const uploadButton = (
@@ -301,9 +316,9 @@ const ProfileEmployer = () => {
             <Form.Item label="Ảnh đại diện"
               name="avatar">
               <Upload
-                action="http://yourbackend.com/upload" // URL for backend upload API
+                action="http://localhost:8080/upload/avatar" // URL for backend upload API
                 method="post"
-                name="avatar"
+                name="file"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
@@ -312,7 +327,7 @@ const ProfileEmployer = () => {
               >
                 {imageUrl ? (
                   <img
-                    src={imageUrl}
+                    src={"http://localhost:8080" + imageUrl}
                     alt="avatar"
                     style={{
                       width: '100%',
@@ -390,6 +405,31 @@ const ProfileEmployer = () => {
 
               ]}
             ><Input /></Form.Item>
+            <Form.Item label="Ảnh công ty"
+              name="picture">
+              <Upload
+                action="http://localhost:8080/upload/picture" // URL for backend upload API
+                method="post"
+                name="file"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                beforeUpload={beforeUpload}
+                onChange={handlePictureChange}
+              >
+                {pictureUrl ? (
+                  <img
+                    src={"http://localhost:8080" + pictureUrl}
+                    alt="picture"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </Form.Item>
 
             {/* <Form.Item
           {...tailFormItemLayout}

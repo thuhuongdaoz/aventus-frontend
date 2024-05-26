@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Button,
   Form,
@@ -11,7 +12,7 @@ import {
 import dayjs from 'dayjs';
 import axios from 'axios';
 import './add-job.css'
-import { Link , useNavigate} from 'react-router-dom';
+
 const onChange = (value) => {
   console.log(`selected ${value}`);
 };
@@ -24,8 +25,9 @@ const filterOption = (input, option) =>
 
 const { Option } = Select;
 
-export default function AddJob() {
+export default function EditJob() {
   const [errorMessage, setErrorMessage] = useState("error");
+  const [job, setJob] = useState(null);
   const [careers, setCareers] = useState([]);
   const [degrees, setDegrees] = useState([]);
   const [provinces, setProvinces] = useState([]);
@@ -33,7 +35,10 @@ export default function AddJob() {
   const [wards, setWards] = useState([]);
 
   const navigate = useNavigate();
-  
+  const { id } = useParams();
+
+
+
   useEffect(() => {
     axios.get('http://localhost:8080/careers')
       .then(response => {
@@ -60,7 +65,40 @@ export default function AddJob() {
       .catch(error => {
         console.error('Error fetching provinces:', error);
       });
+    loadJob()
   }, []);
+  const loadJob = async () => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const result = await axios.get(`http://localhost:8080/jobs/${id}`, { headers });
+    // console.log(result.data)
+    setJob(result.data);
+  };
+
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if (job != null) {
+      form.setFieldsValue({
+        ...job,
+        careerId : job.career.id,
+        degreeId : job.degree.id,
+        province_code: job.ward.district.province.code,
+        district_code: job.ward.district.code,
+        ward_code: job.ward.code,
+        deadline: dayjs(job.deadline),
+      })
+
+      if (job.ward.district.province.code) {
+        handleProvinceChange(job.ward.district.province.code);
+      }
+      if (job.ward.district.code) {
+        handleDistrictChange(job.ward.district.code);
+      }
+
+    }
+  }, [job])
   const handleProvinceChange = (value) => {
     // Fetch districts data based on selected province
     axios.get(`http://localhost:8080/districts?province=${value}`)
@@ -85,16 +123,16 @@ export default function AddJob() {
   };
   const onFinish = async (values) => {
     try {
-      console.log('add job', values)
-      console.log('add job format', { ...values,  deadline: dayjs(values.deadline).format('YYYY-MM-DD') })
+      // console.log('edit job', values)
+      // console.log('edit job format', { ...values, deadline: dayjs(values.deadline).format('YYYY-MM-DD') })
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.post('http://localhost:8080/jobs', { ...values, dateOfBirth: dayjs(values.dateOfBirth).format('YYYY-MM-DD') }, { headers });
-      console.log('add job response:', response.data);
+      const response = await axios.put(`http://localhost:8080/jobs/${id}`, { ...values, deadline: dayjs(values.deadline).format('YYYY-MM-DD') }, { headers });
+      // console.log('edit job response:', response.data);
       notification.success({
-        message: 'Thêm việc làm thành công',
+        message: 'Sửa việc làm thành công',
       });
 
       navigate("/listjob")
@@ -108,12 +146,15 @@ export default function AddJob() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+
+
   return (
     <div className='add-job'>
-      <h1 className='add-job-title'>Thêm việc làm</h1>
+      <h1 className='add-job-title'>Sửa việc làm</h1>
       <div className='add-job-form'>
         {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
         <Form
+          form={form}
           name="basic"
           labelCol={{
             span: 8,
@@ -179,14 +220,14 @@ export default function AddJob() {
             name="minOffer"
             rules={[{ required: true, message: 'Vui lòng nhập mức lương tối thiểu!' }]}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber step={0.1} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item
             label="Mức lương tối đa (triệu)"
             name="maxOffer"
             rules={[{ required: true, message: 'Vui lòng nhập mức lương tối đa!' }]}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber step={0.1} style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item
@@ -273,7 +314,7 @@ export default function AddJob() {
               Lưu
             </Button>
             <Link to='/listjob'><Button>Cancel</Button></Link>
-            
+
           </Form.Item>
         </Form>
       </div>

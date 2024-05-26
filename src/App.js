@@ -1,56 +1,39 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import PrivateRoute from './components/auth/PrivateRoute';
 import Home from './components/pages/Home';
 import Login from './components/auth/Login';
 import RegisterCandidate from './components/auth/Register/RegisterCandidate';
 import RegisterEmployer from './components/auth/Register/RegisterEmployer';
+import Content from './components/layout/Content';
 import Profile from './components/pages/Profile';
 import ChangePassword from './components/pages/ChangePassword';
 import LIstJob from './components/jobs/ListJob';
 import AddJob from './components/jobs/AddJob';
+import EditJob from './components/jobs/EditJob';
+import ViewJob from './components/jobs/ViewJob';
+import DeepSearchJob from './components/jobs/DeepSearchJob';
 import axios from 'axios';
 
+import 'antd-css-utilities/utility.min.css'
+
+
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const checkToken = () => {
-  //   console.log("vao day")
-  //   const token = localStorage.getItem('token');
-  //   console.log("vao day", token)
-  //   if(!token) return false;
-  //   axios.get('http://localhost:8080/auth/introspect', {
-  //     headers : {
-  //       Authorization: `Bearer ${token}`,
-  //     }
-  //   })
-  //     .then(response => {
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error introspect token:', error);
-  //       return false;
-  //     });
-  // };
-  useEffect(() => {
-    setIsAuthenticated(checkToken());
-  }, [localStorage.getItem('token')]);
-  // const [token, setToken] = useState(null);
-  // const handleLogin = (receivedToken) => {
-  //   setToken(receivedToken);
-  // };
-  const checkToken = () => {
-      console.log("vao day1")
-      const token = localStorage.getItem('token');
-      return !!token
-    };
+ 
+  
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />}>
+          <Route path="/" element={ <PrivateRoute><Home /></PrivateRoute>}>
+            <Route path="/" element={<Content/>} />
             <Route path="profile" element={<Profile />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="/listjob" element={<LIstJob />} />
             <Route path="/addjob" element={<AddJob />} />
+            <Route path="/editjob/:id" element={<EditJob />} />
+            <Route path="/viewjob/:id" element={<ViewJob />} />
+            <Route path="/deepsearchjob" element={<DeepSearchJob />} />
             
           </Route>
           <Route path="/login" element={<Login />} />
