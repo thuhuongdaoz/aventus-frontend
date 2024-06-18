@@ -25,7 +25,7 @@ const filterOption = (input, option) =>
 const { Option } = Select;
 
 export default function AddJob() {
-  const [errorMessage, setErrorMessage] = useState("error");
+  const [errorMessage, setErrorMessage] = useState("");
   const [careers, setCareers] = useState([]);
   const [degrees, setDegrees] = useState([]);
   const [provinces, setProvinces] = useState([]);

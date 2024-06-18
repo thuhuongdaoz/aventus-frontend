@@ -22,7 +22,7 @@ export default function ViewJob() {
     setJob(result.data);
   };
   return (
-    <div className='view-job mt-60 py-11 flex gap-12'>
+    <div className='view-job hu-mt-60 py-11 flex gap-12'>
       <div className='left-side flex flex-col gap-12'>
         <div className='job-title px-6 py-5 flex flex-col gap-8'>
           <h1 className='job-name my-0 font-bold '>{job?.name}</h1>

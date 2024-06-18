@@ -6,7 +6,7 @@ import './change-password.css'
 
 
 export default function ChangePassword() {
-    const [errorMessage, setErrorMessage] = useState("error");
+    const [errorMessage, setErrorMessage] = useState("");
     const [messageApi, contextHolder] = message.useMessage();
     const onFinish = async (values) => {
         const token = localStorage.getItem('token');

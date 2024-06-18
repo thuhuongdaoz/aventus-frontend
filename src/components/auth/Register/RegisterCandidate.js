@@ -26,7 +26,7 @@ const RegisterCandidate = () => {
         username: "",
         email: "",
     });
-    const [errorMessage, setErrorMessage] = useState("erroe");
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const handleClose = () => {

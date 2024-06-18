@@ -24,7 +24,7 @@ const tailFormItemLayout = {
 const { Option } = Select;
 const RegisterEmployer = () => {
     const [errorMessage, setErrorMessage] = useState(
-        "error"
+        ""
     );
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);

@@ -1,3 +1,32 @@
+
 .deep-search-job{
-    padding: 32px 112px;
+    padding: 32px 25%;
+}
+.deep-search-job-list .job {
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+}
+.deep-search-job-list .company-picture{
+    width: 105px;
+    height: 105px;
+    border: 1px solid #e9eaec;
+    border-radius: 8px;
+
+}
+.deep-search-job-list .job-name{
+    color: #212f3f;
+    font-weight: 600px;
+}
+.deep-search-job-list .company-name{
+    font-size: 14px;
+    color: #424e5c;
+}
+.deep-search-job-list .offer{
+    color: #1677ff;
+    font-weight: 600;
+}
+.deep-search-job-list .pagination-container{
+
 }

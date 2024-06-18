@@ -54,7 +54,7 @@ const filterOption = (input, option) =>
 
 
 const ProfileCandidate = () => {
-  const [errorMessage, setErrorMessage] = useState("error");
+  const [errorMessage, setErrorMessage] = useState("");
   const [candidate, setCandidate] = useState(null);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);

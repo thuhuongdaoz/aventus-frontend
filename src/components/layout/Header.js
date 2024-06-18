@@ -109,7 +109,7 @@ export default function Header() {
         placement="bottomRight"
       >
         <div className='right-header'>
-          <img className="avatar" src={user ? (user.avatar ? "http://localhost:8080" + user.avatar : "https://media.vneconomy.vn/images/upload/2021/04/21/1-1604555533642683459571-1604566620108397274357.png") : "https://media.vneconomy.vn/images/upload/2021/04/21/1-1604555533642683459571-1604566620108397274357.png"} />
+          <img className="avatar" src={user ? (user.avatar ? "http://localhost:8080" + user.avatar : "https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png") : "https://i0.wp.com/sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png"} />
           <div>{user ? user.name : 'Loading data...'}</div>
         </div>
       </Dropdown>

@@ -19,7 +19,7 @@ const tailFormItemLayout = {
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState(
-        "error"
+        ""
     );
     const navigate = useNavigate();
     const onFinish = async (values) => {
