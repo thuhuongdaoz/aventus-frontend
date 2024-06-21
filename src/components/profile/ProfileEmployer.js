@@ -212,8 +212,9 @@ const ProfileEmployer = () => {
     </button>
   );
   return (
-    <div className='profile'>
-      <h1>Thông tin cá nhân</h1>
+    <div className='profile flex justify-center items-center'>
+      <div className='profile-content'>
+      <h1 className='text-center'>Thông tin cá nhân</h1>
       <div className='box-update-info'>
         {/* <div className='left-profile'>
 
@@ -457,6 +458,8 @@ const ProfileEmployer = () => {
       </div>
 
     </div>
+    </div>
+    
   )
 }
 

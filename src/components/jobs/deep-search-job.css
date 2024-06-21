@@ -2,6 +2,9 @@
 .deep-search-job{
     padding: 32px 25%;
 }
+.deep-search-job-form{
+    width: 600px;
+}
 .deep-search-job-list .job {
     text-decoration: none;
     border-radius: 8px;
@@ -17,7 +20,8 @@
 }
 .deep-search-job-list .job-name{
     color: #212f3f;
-    font-weight: 600px;
+    font-weight: 600;
+    font-size: 18px;
 }
 .deep-search-job-list .company-name{
     font-size: 14px;

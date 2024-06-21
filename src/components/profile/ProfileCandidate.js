@@ -142,16 +142,16 @@ const ProfileCandidate = () => {
   const onFinish = async (values) => {
     try {
       console.log('Update candidate info request', values)
-      console.log('Update candidate info request format', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null , avatar : imageUrl})
+      console.log('Update candidate info request format', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null, avatar: imageUrl })
       const token = localStorage.getItem('token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.put('http://localhost:8080/candidates/myInfo', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null , avatar : imageUrl}, { headers });
+      const response = await axios.put('http://localhost:8080/candidates/myInfo', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null, avatar: imageUrl }, { headers });
       console.log('Update candidate info response:', response.data);
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
-    });
+      });
 
       // navigate("/login")
     } catch (error) {
@@ -233,10 +233,11 @@ const ProfileCandidate = () => {
     </button>
   );
   return (
-    <div className='profile'>
-      <h1>Thông tin cá nhân</h1>
-      <div className='box-update-info'>
-        {/* <div className='left-profile'>
+    <div className='profile flex justify-center items-center'>
+      <div className='profile-content'>
+        <h1 className='text-center'>Thông tin cá nhân</h1>
+        <div className='box-update-info'>
+          {/* <div className='left-profile'>
 
           <Upload
             action="http://yourbackend.com/upload" // URL for backend upload API
@@ -261,129 +262,129 @@ const ProfileCandidate = () => {
             )}
           </Upload>
         </div> */}
-        <div className='right-profile'>
-          {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
-            style={{
-              maxWidth: 600,
-            }}
-            initialValues={candidate || {}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            
-            {/* <Form.Item
+          <div className='right-profile'>
+            {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{
+                span: 8,
+              }}
+              wrapperCol={{
+                span: 16,
+              }}
+              style={{
+                maxWidth: 600,
+              }}
+              initialValues={candidate || {}}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+
+              {/* <Form.Item
           {...tailFormItemLayout}
         >
           <h2 style={{ margin: '0px' }}>Thông tin cá nhân</h2>
         </Form.Item> */}
-            <Form.Item
-              // initialValue={candidate?.name || 'demo'}
-              label="Họ tên"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập họ tên của bạn!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập email của bạn!',
-                },
-                {
-                  type: "email",
-                  message: "Email không hợp lệ!"
-                },
-              ]}
-            >
-              <Input disabled />
-            </Form.Item>
-
-            <Form.Item
-              label="Ngày sinh"
-              name="dateOfBirth"
-            // rules={[{ required: true, message: 'Please input!' }]}
-            >
-              <DatePicker style={{ width: '100%' }} maxDate={dayjs()} />
-            </Form.Item>
-            <Form.Item
-              name="phoneNumber"
-              label="Phone Number"
-              // rules={[{ required: true, message: 'Please input your phone number!' }]}
-              rules={[{ validator: validatePhoneNumber }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item label="Ảnh đại diện"
-              name="avatar">
-              <Upload
-                action="http://localhost:8080/upload/avatar" // URL for backend upload API
-                method="post"
-                name="file"
-                listType="picture-card"
-                className="avatar-uploader"
-                showUploadList={false}
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
+              <Form.Item
+                // initialValue={candidate?.name || 'demo'}
+                label="Họ tên"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập họ tên của bạn!',
+                  },
+                ]}
               >
-                {imageUrl ? (
-                  <img
-                    src={"http://localhost:8080" + imageUrl}
-                    alt="avatar"
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
-            </Form.Item>
-            <Form.Item label="Tỉnh/thành phố" name="province_code"
-            // rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành phố!' }]}
-            >
-              <Select placeholder="Chọn tỉnh/thành phố" onChange={handleProvinceChange}>
-                {provinces.map(province => (
-                  <Option key={province.code} value={province.code}>{province.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Quận/huyện" name="district_code"
-            // rules={[{ required: true, message: 'Vui lòng chọn quận/huyện!' }]}
-            >
-              <Select placeholder="Chọn quận/huyện" onChange={handleDistrictChange}>
-                {districts.map(district => (
-                  <Option key={district.code} value={district.code}>{district.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Phường/xã" name="ward_code"
-            //  rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}
-            >
-              <Select placeholder="Chọn phường/xã">
-                {wards.map(ward => (
-                  <Option key={ward.code} value={ward.code}>{ward.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            {/* <Form.Item label="Phường/xã" name="ward" rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}>
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng nhập email của bạn!',
+                  },
+                  {
+                    type: "email",
+                    message: "Email không hợp lệ!"
+                  },
+                ]}
+              >
+                <Input disabled />
+              </Form.Item>
+
+              <Form.Item
+                label="Ngày sinh"
+                name="dateOfBirth"
+              // rules={[{ required: true, message: 'Please input!' }]}
+              >
+                <DatePicker style={{ width: '100%' }} maxDate={dayjs()} />
+              </Form.Item>
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                // rules={[{ required: true, message: 'Please input your phone number!' }]}
+                rules={[{ validator: validatePhoneNumber }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item label="Ảnh đại diện"
+                name="avatar">
+                <Upload
+                  action="http://localhost:8080/upload/avatar" // URL for backend upload API
+                  method="post"
+                  name="file"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                >
+                  {imageUrl ? (
+                    <img
+                      src={"http://localhost:8080" + imageUrl}
+                      alt="avatar"
+                      style={{
+                        width: '100%',
+                      }}
+                    />
+                  ) : (
+                    uploadButton
+                  )}
+                </Upload>
+              </Form.Item>
+              <Form.Item label="Tỉnh/thành phố" name="province_code"
+              // rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành phố!' }]}
+              >
+                <Select placeholder="Chọn tỉnh/thành phố" onChange={handleProvinceChange}>
+                  {provinces.map(province => (
+                    <Option key={province.code} value={province.code}>{province.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item label="Quận/huyện" name="district_code"
+              // rules={[{ required: true, message: 'Vui lòng chọn quận/huyện!' }]}
+              >
+                <Select placeholder="Chọn quận/huyện" onChange={handleDistrictChange}>
+                  {districts.map(district => (
+                    <Option key={district.code} value={district.code}>{district.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item label="Phường/xã" name="ward_code"
+              //  rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}
+              >
+                <Select placeholder="Chọn phường/xã">
+                  {wards.map(ward => (
+                    <Option key={ward.code} value={ward.code}>{ward.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              {/* <Form.Item label="Phường/xã" name="ward" rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}>
           <Select showSearch
             placeholder="Chọn phường/xã"
             optionFilterProp="children"
@@ -398,61 +399,69 @@ const ProfileCandidate = () => {
           />
 
         </Form.Item> */}
-            <Form.Item
-              label="Địa chỉ"
-              name="address"
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: 'Vui lòng nhập địa chỉ công ty!',
-            //   },
+              <Form.Item
+                label="Địa chỉ"
+                name="address"
+              // rules={[
+              //   {
+              //     required: true,
+              //     message: 'Vui lòng nhập địa chỉ công ty!',
+              //   },
 
-            // ]}
-            ><Input /></Form.Item>
-            <Form.Item label="Chuyên ngành" name="major_id"
-            // rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}
-            >
-              <Select
-                showSearch
-                placeholder="Chọn chuyên ngành"
-                optionFilterProp="children"
-                onChange={onChange}
-                onSearch={onSearch}
-                filterOption={filterOption}
-                options={
-                  majors.map(major => ({
-                    value: major.id,
-                    label: major.name
-                  }))
-                }
-              />
-            </Form.Item>
-            {/* <Form.Item
+              // ]}
+              ><Input /></Form.Item>
+              <Form.Item label="Chuyên ngành" name="major_id"
+              // rules={[{ required: true, message: 'Vui lòng chọn chuyên ngành!' }]}
+              >
+                <Select
+                  showSearch
+                  placeholder="Chọn chuyên ngành"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                  onSearch={onSearch}
+                  filterOption={filterOption}
+                  options={
+                    majors.map(major => ({
+                      value: major.id,
+                      label: major.name
+                    }))
+                  }
+                />
+              </Form.Item>
+              {/* <Form.Item
           label="CPA"
           name="cpa"
         // rules={[{ required: true, message: 'Please input!' }]}
         >
           <InputNumber step={0.01} style={{ width: '100%' }} />
         </Form.Item> */}
-            <Form.Item label="Bằng cấp" name="degree_id"
-            // rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}
-            >
-              <Select placeholder="Chọn bằng cấp">
-                {degrees.map(degree => (
-                  <Option key={degree.id} value={degree.id}>{degree.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Trình độ Tiếng Anh" name="english_level_id"
-            // rules={[{ required: true, message: 'Vui lòng chọn phường/xã!' }]}
-            >
-              <Select placeholder="Chọn trình độ Tiếng Anh">
-                {englishLevels.map(englishLevel => (
-                  <Option key={englishLevel.id} value={englishLevel.id}>{englishLevel.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-            {/* <Form.Item
+              <Form.Item label="Bằng cấp" name="degree_id"
+              // rules={[{ required: true, message: 'Vui lòng chọn bằng cấp!' }]}
+              >
+                <Select placeholder="Chọn bằng cấp">
+                  {degrees.map(degree => (
+                    <Option key={degree.id} value={degree.id}>{degree.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item
+                label="Kinh nghiệm"
+                name="experience"
+                // rules={[{ required: true, message: 'Vui lòng nhập số năm kinh nghiệm!' }]}
+
+              >
+                <InputNumber addonAfter="năm" style={{ width: '100%' }} />
+              </Form.Item>
+              <Form.Item label="Trình độ Tiếng Anh" name="english_level_id"
+              // rules={[{ required: true, message: 'Vui lòng chọn trình độ tiếng anh' }]}
+              >
+                <Select placeholder="Chọn trình độ Tiếng Anh">
+                  {englishLevels.map(englishLevel => (
+                    <Option key={englishLevel.id} value={englishLevel.id}>{englishLevel.name + englishLevel.description}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              {/* <Form.Item
           {...tailFormItemLayout}
         >
           {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
@@ -462,22 +471,24 @@ const ProfileCandidate = () => {
 
 
 
-            <Form.Item
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
-              <Button type="primary" htmlType="submit">
-                Lưu
-              </Button>
-            </Form.Item>
-          </Form>
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Lưu
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+
         </div>
 
       </div>
-
     </div>
+
   )
 }
 

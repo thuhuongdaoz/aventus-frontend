@@ -1,0 +1,15 @@
+.view-application {
+    min-height: calc(100vh - 60px);
+}
+.view-application .info{
+    min-width: 600px;
+    font-size: 18px;
+
+
+}
+.view-application .label, .view-application .value{
+    flex: 1;
+}
+.view-application .btn-view-cv{
+    font-size: 18px;
+}

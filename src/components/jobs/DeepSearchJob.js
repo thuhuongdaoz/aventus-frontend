@@ -108,9 +108,9 @@ export default function DeepSearchJob() {
     };
     return (
         <div className='deep-search-job mt-15'>
-            <h1 className='mt-0 mb-15'>Trợ giúp tìm kiếm</h1>
-            <div>
-
+            <h1 className='mt-0'>Trợ giúp tìm kiếm</h1>
+            <div className='deep-search-job-form ma-auto'>
+                {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
                 <Form className='ma-auto'
                     name="basic"
                     labelCol={{
@@ -126,7 +126,7 @@ export default function DeepSearchJob() {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    {errorMessage && (<div className="error-msg">{errorMessage}</div>)}
+                    
                     <Form.Item label="Chuyên ngành" name="majorId"
                         rules={[{ required: true, message: 'Vui lòng chọn chuyên ngành' }]}
                     >
@@ -209,12 +209,13 @@ export default function DeepSearchJob() {
                     ))}
                 </div>
                 <div className="flex justify-center mt-9">
-                    <Pagination
+                    { jobs.length &&
+                        <Pagination
                         current={currentPage}
                         pageSize={pageSize}
                         total={jobs.length}
                         onChange={handlePageChange}
-                    />
+                    />}
                 </div>
 
             </div>

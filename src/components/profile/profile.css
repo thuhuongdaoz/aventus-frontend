@@ -9,6 +9,10 @@
     padding: 24px 30px;
     
 }
+.profile-content{
+    width: 660px;
+    
+}
 .box-update-info {
     display: flex;
 }

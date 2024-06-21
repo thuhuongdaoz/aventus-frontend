@@ -30,6 +30,34 @@ export default function Header() {
     localStorage.removeItem('token'); // Remove the token
     navigate('/login'); // Redirect to login page
   }
+  const adminItems = [
+    {
+      key: '1',
+      label: (
+        <Link to="/profile">
+          Thông tin cá nhân
+        </Link>
+
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Link to="/change-password">
+          Đổi mật khẩu
+        </Link>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <div onClick={logout}>
+          Đăng xuất
+        </div>
+      ),
+    },
+
+  ];
   const candidateItems = [
     {
       key: '1',
@@ -104,7 +132,7 @@ export default function Header() {
       <Link className='left-header' to="/ ">Aventus</Link>
       <Dropdown
         menu={{
-          items: role == 'CANDIDATE' ? candidateItems : employerItems,
+          items: role == 'ADMIN' ? adminItems :  (role == 'CANDIDATE' ? candidateItems : employerItems),
         }}
         placement="bottomRight"
       >
