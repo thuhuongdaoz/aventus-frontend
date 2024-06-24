@@ -109,10 +109,10 @@ export default function ListUser() {
         setUsers(response.data)
 
     };
-    const deleteJob = async (id) => {
-        // console.log(id)
+    const changeUserStatus = async (id) => {
+        console.log(id)
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:8080/jobs/${id}`, {
+        await axios.post(`http://localhost:8080/users/${id}/changeStatus`,null, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -156,8 +156,7 @@ export default function ListUser() {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Link to={`/editjob/${record.id}`}>Sửa</Link>
-                    <Button type="link" onClick={() => deleteJob(record.id)}>Xoá</Button>
+                    <Button type="link" onClick={() => changeUserStatus(record.id)}>{record.status == 'Active' ? 'Lock' : 'Unlock'}</Button>
                 </Space>
             ),
         },

@@ -51,11 +51,20 @@ export default function Header() {
     {
       key: '3',
       label: (
+        <Link to="/">
+          Quản lý người dùng
+        </Link>
+      ),
+    },
+    {
+      key: '4',
+      label: (
         <div onClick={logout}>
           Đăng xuất
         </div>
       ),
     },
+    
 
   ];
   const candidateItems = [
@@ -78,6 +87,22 @@ export default function Header() {
     },
     {
       key: '3',
+      label: (
+        <Link to="/">
+          Tìm kiếm việc làm
+        </Link>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <Link to="/deepsearchjob">
+          Trợ giúp tìm kiếm
+        </Link>
+      ),
+    },
+    {
+      key: '5',
       label: (
         <div onClick={logout}>
           Đăng xuất
@@ -115,6 +140,22 @@ export default function Header() {
     },
     {
       key: '4',
+      label: (
+        <Link to="/">
+          Đánh giá ứng viên
+        </Link>
+      ),
+    },
+    {
+      key: '5',
+      label: (
+        <Link to="/deepsearchapplication">
+          Trợ giúp đánh giá
+        </Link>
+      ),
+    },
+    {
+      key: '6',
       label: (
         <div onClick={logout}>
           Đăng xuất

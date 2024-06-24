@@ -209,7 +209,7 @@ export default function DeepSearchJob() {
                     ))}
                 </div>
                 <div className="flex justify-center mt-9">
-                    { jobs.length &&
+                    { jobs.length > 0 &&
                         <Pagination
                         current={currentPage}
                         pageSize={pageSize}
