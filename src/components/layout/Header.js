@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown } from 'antd';
+import { useData } from '../../DataContext';
 import axios from 'axios';
 import './header.css'
 
 
 export default function Header() {
+  const { user } = useData()
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const role = localStorage.getItem("role")
-  useEffect(() => {
-    // setToken(localStorage.getItem('token'));
-    const token = localStorage.getItem('token');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    // Fetch provinces data when component mounts
-    axios.get('http://localhost:8080/users/myInfo', { headers })
-      .then(response => {
-        setUser(response.data)
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //   };
 
-      })
-      .catch(error => {
-        console.error('Error fetching myInfo:', error);
-      });
-  }, []);
+  //   axios.get('http://localhost:8080/users/myInfo', { headers })
+  //     .then(response => {
+  //       setUser(response.data)
+
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching myInfo:', error);
+  //     });
+  // }, []);
   const logout = () => {
     localStorage.removeItem('token'); // Remove the token
     navigate('/login'); // Redirect to login page
@@ -48,14 +49,14 @@ export default function Header() {
         </Link>
       ),
     },
-    {
-      key: '3',
-      label: (
-        <Link to="/">
-          Quản lý người dùng
-        </Link>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <Link to="/">
+    //       Quản lý người dùng
+    //     </Link>
+    //   ),
+    // },
     {
       key: '4',
       label: (
@@ -64,7 +65,7 @@ export default function Header() {
         </div>
       ),
     },
-    
+
 
   ];
   const candidateItems = [
@@ -85,22 +86,22 @@ export default function Header() {
         </Link>
       ),
     },
-    {
-      key: '3',
-      label: (
-        <Link to="/">
-          Tìm kiếm việc làm
-        </Link>
-      ),
-    },
-    {
-      key: '4',
-      label: (
-        <Link to="/deepsearchjob">
-          Trợ giúp tìm kiếm
-        </Link>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <Link to="/">
+    //       Tìm kiếm việc làm
+    //     </Link>
+    //   ),
+    // },
+    // {
+    //   key: '4',
+    //   label: (
+    //     <Link to="/deepsearchjob">
+    //       Trợ giúp tìm kiếm
+    //     </Link>
+    //   ),
+    // },
     {
       key: '5',
       label: (
@@ -130,30 +131,30 @@ export default function Header() {
 
       ),
     },
-    {
-      key: '3',
-      label: (
-        <Link to="/listJob">
-          Quản lý việc làm
-        </Link>
-      ),
-    },
-    {
-      key: '4',
-      label: (
-        <Link to="/">
-          Đánh giá ứng viên
-        </Link>
-      ),
-    },
-    {
-      key: '5',
-      label: (
-        <Link to="/deepsearchapplication">
-          Trợ giúp đánh giá
-        </Link>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <Link to="/listJob">
+    //       Quản lý việc làm
+    //     </Link>
+    //   ),
+    // },
+    // {
+    //   key: '4',
+    //   label: (
+    //     <Link to="/">
+    //       Đánh giá ứng viên
+    //     </Link>
+    //   ),
+    // },
+    // {
+    //   key: '5',
+    //   label: (
+    //     <Link to="/deepsearchapplication">
+    //       Trợ giúp đánh giá
+    //     </Link>
+    //   ),
+    // },
     {
       key: '6',
       label: (
@@ -169,11 +170,30 @@ export default function Header() {
 
   return (
     <div className='header'>
-      {/* <div className='left-header'>Aventus</div> */}
-      <Link className='left-header' to="/ ">Aventus</Link>
+      <div className='flex items-center'>
+        <Link className='left-header logo' to="/">Aventus</Link>
+        {
+          role == 'ADMIN' ? (<Link className='left-header header-item' to="/"> Quản lý người dùng</Link>)
+            : (role == 'CANDIDATE' ?
+              (
+                <>
+                  <Link className='left-header header-item' to="/ ">Tìm kiếm việc làm</Link>
+                  <Link className='left-header header-item' to="/deepsearchjob">Trợ giúp tìm kiếm</Link>
+                </>
+
+              ) : (
+                <>
+                  <Link className='left-header header-item' to="/listJob">Quản lý việc làm</Link>
+                  <Link className='left-header header-item' to="/">Đánh giá ứng viên</Link>
+                  <Link className='left-header header-item' to="/deepsearchapplication">Trợ giúp đánh giá</Link>
+                </>
+              ))
+        }
+      </div>
+
       <Dropdown
         menu={{
-          items: role == 'ADMIN' ? adminItems :  (role == 'CANDIDATE' ? candidateItems : employerItems),
+          items: role == 'ADMIN' ? adminItems : (role == 'CANDIDATE' ? candidateItems : employerItems),
         }}
         placement="bottomRight"
       >

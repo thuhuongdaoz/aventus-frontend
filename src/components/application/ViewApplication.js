@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import {
-    Button, Form,
+    Button, Form, Card,
     notification
 } from 'antd';
 
@@ -46,11 +46,10 @@ export default function ViewApplication() {
       };
     return (
         <div className='view-application hu-mt-60 p-4 flex justify-center items-center' >
-            <div className=''>
-                <h1 className='text-center mt-0 mb-7'>Hồ sơ ứng viên</h1>
-                <div className='info'>
+            <Card title="Hồ sơ ứng viên" headStyle={{ fontSize: '32px' }}>
+            <div className='info'>
                     <div className='flex gap-10 mb-5'>
-                        <div className='label text-right'>Họ tên: </div>
+                        <div className='label text-right '>Họ tên: </div>
                         <div className='value'>{application?.name}</div>
                     </div>
                     <div className='flex gap-10 mb-5'>
@@ -103,7 +102,8 @@ export default function ViewApplication() {
                         <Button size='large' onClick={() => changeStatus(3)}>Từ chối</Button>
 
                     </div>}
-            </div>
+
+            </Card>
 
 
 

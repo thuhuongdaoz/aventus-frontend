@@ -55,14 +55,14 @@ export default function DeepSearchJob() {
     ]);
     const [majors, setMajors] = useState([]);
     const [degrees, setDegrees] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState();
     const pageSize = 10;
 
     const [open, setOpen] = useState(false);
     const [weight, setWeight] = useState([0, 0, 0, 0])
     const [bestSolution, setBestSolution] = useState([])
     const [worstSolution, setWorstSolution] = useState([])
-    // const listRef = useRef(null);
+    const listRef = useRef();
     useEffect(() => {
         axios.get('http://localhost:8080/majors')
             .then(response => {
@@ -83,14 +83,18 @@ export default function DeepSearchJob() {
             });
 
     }, []);
-    // useEffect(() => {
-    //     if (listRef.current) {
-    //         window.scrollTo({
-    //             top: listRef.current.offsetTop - 80, // 100px offset from the top
-    //             behavior: 'smooth'
-    //         });
-    //     }
-    // }, [currentPage]);
+    useEffect(() => {
+        scroll()
+    }, [currentPage]);
+    const scroll = () => {
+        if (listRef.current) {
+            console.log(listRef)
+            window.scrollTo({
+                top: listRef.current.offsetTop - 250, // 100px offset from the top
+                behavior: 'smooth'
+            });
+        }
+    }
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
@@ -111,8 +115,14 @@ export default function DeepSearchJob() {
 
             // console.log(jobs)
             // console.log(sortedJobs)
-            setCurrentPage(1)
+            if(currentPage == 1){
+                scroll();
+            }else
+                setCurrentPage(1)
+            
             setErrorMessage(null)
+            
+
 
         } catch (error) {
             if (error.response) {
@@ -220,13 +230,13 @@ export default function DeepSearchJob() {
             title: 'D+',
             dataIndex: 'distanceBest',
             key: 'distanceBest',
-            
+
         },
         {
             title: 'D-',
             dataIndex: 'distanceWorst',
             key: 'distanceWorst',
-            
+
         },
     ];
     const columns6 = [
@@ -235,24 +245,24 @@ export default function DeepSearchJob() {
             dataIndex: 'name',
             key: 'name',
         },
-        
+
         {
             title: 'D+',
             dataIndex: 'distanceBest',
             key: 'distanceBest',
-            
+
         },
         {
             title: 'D-',
             dataIndex: 'distanceWorst',
             key: 'distanceWorst',
-            
+
         },
         {
             title: 'P',
             dataIndex: 'p',
             key: 'p',
-            
+
         },
 
 
@@ -263,13 +273,13 @@ export default function DeepSearchJob() {
             dataIndex: 'name',
             key: 'name',
         },
-        
-        
+
+
         {
             title: 'P',
             dataIndex: 'p',
             key: 'p',
-            
+
         },
         {
             title: 'Rank',
@@ -409,7 +419,7 @@ export default function DeepSearchJob() {
                 </Form>
             </div>
             {jobs.length > 0 &&
-                <div className='deep-search-job-list pt-8'>
+                <div ref={listRef} className='deep-search-job-list pt-8'>
                     <div className='flex justify-end mb-6' >
                         <Button type="primary" onClick={showModal}>
                             Xem chi tiết
@@ -508,8 +518,8 @@ export default function DeepSearchJob() {
                                             degree: round4(job.weightPoint[1]),
                                             experience: round4(job.weightPoint[2]),
                                             offer: round4(job.weightPoint[3]),
-                                            distanceBest : round4(job.distanceBest),
-                                            distanceWorst : round4(job.distanceWorst),
+                                            distanceBest: round4(job.distanceBest),
+                                            distanceWorst: round4(job.distanceWorst),
 
                                         }))
                                         // data
@@ -522,8 +532,8 @@ export default function DeepSearchJob() {
                                             key: job.id,
                                             id: job.id,
                                             name: job.name,
-                                            distanceBest : round4(job.distanceBest),
-                                            distanceWorst : round4(job.distanceWorst),
+                                            distanceBest: round4(job.distanceBest),
+                                            distanceWorst: round4(job.distanceWorst),
                                             p: round4(job.p)
 
                                         }))
@@ -537,15 +547,15 @@ export default function DeepSearchJob() {
                                             key: job.id,
                                             id: job.id,
                                             name: job.name,
-                                            distanceBest : round4(job.distanceBest),
-                                            distanceWorst : round4(job.distanceWorst),
+                                            distanceBest: round4(job.distanceBest),
+                                            distanceWorst: round4(job.distanceWorst),
                                             p: round4(job.p)
 
                                         }))
                                         // data
                                     } />
                                 </div>
-                                
+
 
 
                             </div>
@@ -553,7 +563,7 @@ export default function DeepSearchJob() {
                         </Modal>
                     </div>
                     <div
-                    // ref={listRef}
+
                     >
                         {[...jobs].sort((a, b) => b.p - a.p).slice((currentPage - 1) * pageSize, ((currentPage - 1) * pageSize) + pageSize).map(job => (
                             <Link to={`/viewjob/${job.id}`} key={job.id} className='job pa-4 mb-5 flex gap-8 pa-3 mb-3'>

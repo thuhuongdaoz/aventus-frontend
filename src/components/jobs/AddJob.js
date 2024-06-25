@@ -8,6 +8,8 @@ import {
   InputNumber,
   notification
 } from 'antd';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import './add-job.css'
@@ -121,9 +123,9 @@ export default function AddJob() {
           wrapperCol={{
             span: 16,
           }}
-          style={{
-            maxWidth: 600,
-          }}
+          // style={{
+          //   maxWidth: 600,
+          // }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
@@ -194,21 +196,24 @@ export default function AddJob() {
             name="description"
             rules={[{ required: true, message: 'Vui lòng nhập mô tả công việc!' }]}
           >
-            <Input.TextArea />
+            {/* <Input.TextArea /> */}
+            <ReactQuill />
           </Form.Item>
           <Form.Item
             label="Yêu cầu ứng viên"
             name="requirement"
             rules={[{ required: true, message: 'Vui lòng nhập yêu cầu ứng viên!' }]}
           >
-            <Input.TextArea />
+            {/* <Input.TextArea /> */}
+            <ReactQuill />
           </Form.Item>
           <Form.Item
             label="Quyền lợi"
             name="benefit"
             rules={[{ required: true, message: 'Vui lòng nhập quyền lợi!' }]}
           >
-            <Input.TextArea />
+            {/* <Input.TextArea /> */}
+            <ReactQuill />
           </Form.Item>
           <Form.Item label="Tỉnh/thành phố" name="province_code"
             rules={[{ required: true, message: 'Vui lòng chọn tỉnh/thành phố!' }]}

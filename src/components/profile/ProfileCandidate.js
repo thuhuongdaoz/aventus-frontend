@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import './profile.css'
 import Avatar from 'antd/es/avatar/avatar';
+import { useData } from '../../DataContext';
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -54,6 +55,7 @@ const filterOption = (input, option) =>
 
 
 const ProfileCandidate = () => {
+  const { updateData } = useData();
   const [errorMessage, setErrorMessage] = useState("");
   const [candidate, setCandidate] = useState(null);
   const [provinces, setProvinces] = useState([]);
@@ -156,6 +158,7 @@ const ProfileCandidate = () => {
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
       });
+      updateData();
     } catch (error) {
       if (error.response) {
         // Server responded with a status code other than 2xx

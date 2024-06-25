@@ -40,14 +40,14 @@ export default function DeepSearchApplicationPerJob() {
     const [careers, setCareers] = useState([]);
     // const [majors, setMajors] = useState([]);
     const [degrees, setDegrees] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState();
     const pageSize = 10;
 
     const [open, setOpen] = useState(false);
     const [weight, setWeight] = useState([0, 0, 0, 0])
     const [bestSolution, setBestSolution] = useState([])
     const [worstSolution, setWorstSolution] = useState([])
-    // const listRef = useRef(null);
+    const listRef = useRef();
     const { id } = useParams();
 
     useEffect(() => {
@@ -83,14 +83,18 @@ export default function DeepSearchApplicationPerJob() {
 
     };
 
-    // useEffect(() => {
-    //     if (listRef.current) {
-    //         window.scrollTo({
-    //             top: listRef.current.offsetTop - 80, // 100px offset from the top
-    //             behavior: 'smooth'
-    //           });
-    //     }
-    //   }, [currentPage]);
+    useEffect(() => {
+        scroll()
+    }, [currentPage]);
+    const scroll = () => {
+        if (listRef.current) {
+            console.log(listRef)
+            window.scrollTo({
+                top: listRef.current.offsetTop - 250, // 100px offset from the top
+                behavior: 'smooth'
+            });
+        }
+    }
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
@@ -107,7 +111,10 @@ export default function DeepSearchApplicationPerJob() {
             setWeight(response.data.weight)
             setBestSolution(response.data.bestSolution)
             setWorstSolution(response.data.worstSolution)
-            setCurrentPage(1)
+            if(currentPage == 1){
+                scroll();
+            }else
+                setCurrentPage(1)
             setErrorMessage(null)
 
         } catch (error) {
@@ -377,7 +384,7 @@ export default function DeepSearchApplicationPerJob() {
                     </Form>
                 </div>
                 {applications.length > 0 &&
-                    <div className='deep-search-job-list pt-8'>
+                    <div ref={listRef} className='deep-search-job-list pt-8'>
                         <div className='flex justify-end mb-6' >
                             <Button type="primary" onClick={showModal}>
                                 Xem chi tiết
@@ -517,7 +524,6 @@ export default function DeepSearchApplicationPerJob() {
                             </Modal>
                         </div>
                         <div
-                        // ref={listRef}
                         >
                             {[...applications].sort((a, b) => b.p - a.p).slice((currentPage - 1) * pageSize, ((currentPage - 1) * pageSize) + pageSize).map(application => (
                                 <Link to={`/viewapplication/${application.id}`} key={application.id} className='job pa-4 mb-5 flex gap-8 pa-3 mb-3'>

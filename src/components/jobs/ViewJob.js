@@ -60,6 +60,7 @@ const props = {
 };
 
 export default function ViewJob() {
+  const role = localStorage.getItem("role")
   const [job, setJob] = useState(null);
   const [hasApplied, setHasApplied] = useState(false)
   
@@ -106,8 +107,10 @@ export default function ViewJob() {
         console.error('Error fetching englishLevels:', error);
       });
     loadJob()
-    loadCandidate();
-    checkApplied()
+    if(role == 'CANDIDATE') {
+      loadCandidate();
+      checkApplied()
+    }
     window.scrollTo({
       top : 0
     })
@@ -261,6 +264,7 @@ export default function ViewJob() {
             <Tag style={{ fontSize: '14px' }} icon={<UserOutlined />} color="cyan" >Số lượng tuyển: {job?.quantity} người</Tag>
             <Tag style={{ fontSize: '14px' }} icon={<ClockCircleOutlined />} color="cyan" >Hạn nộp hồ sơ: {job?.deadline}</Tag>
           </div>
+          {role == 'CANDIDATE' &&
           <div>
             {!hasApplied? 
             <Button className="w-full" type="primary" onClick={showModal}>Ứng tuyển ngay</Button>
@@ -420,6 +424,7 @@ export default function ViewJob() {
               </div>
             </Modal>
           </div>
+          }
 
         </div>
         <div className='job-detail px-6 py-7 flex flex-col gap-10'>
@@ -428,27 +433,27 @@ export default function ViewJob() {
           </div>
           <div className='flex flex-col gap-4'>
             <div className='job-criteria-title'>Mô tả công việc</div>
-            <div className='pl-10 job-criteria-value'>{job?.description}</div>
+            <div className='job-criteria-value' dangerouslySetInnerHTML={{ __html: job?.description }}/>
           </div>
           <div className='flex flex-col gap-4'>
             <div className='job-criteria-title'>Yêu cầu ứng viên</div>
-            <div className='pl-10 job-criteria-value'>{job?.requirement}</div>
+            <div className='job-criteria-value' dangerouslySetInnerHTML={{ __html: job?.requirement }}/>
           </div>
           <div className='flex flex-col gap-4'>
             <div className='job-criteria-title'>Quyền lợi</div>
-            <div className='pl-10 job-criteria-value'>{job?.benefit}</div>
+            <div className='job-criteria-value' dangerouslySetInnerHTML={{ __html: job?.benefit }}/>
 
           </div>
           <div className='flex flex-col gap-4'>
             <div className='job-criteria-title'>Địa điểm làm việc</div>
-            <div className='pl-10 job-criteria-value'>{job?.address}, {job?.ward.full_name}, {job?.ward.district.full_name}, {job?.ward.district.province.full_name}</div>
+            <div className='job-criteria-value'>{job?.address}, {job?.ward.full_name}, {job?.ward.district.full_name}, {job?.ward.district.province.full_name}</div>
           </div>
         </div>
       </div>
       <div className='right-side'>
         <div className='company-info pa-5 flex flex-col '>
           <div className='flex gap-8 mb-3 items-center'>
-            {job?.employer.pictiure ? (<img className='company-image' src={"http://localhost:8080" + job?.employer.pictiure} />) : (<img className='company-image' src="https://www.shutterstock.com/image-vector/building-icon-260nw-377768164.jpg" />)
+            {job?.employer.picture ? (<img className='company-image' src={"http://localhost:8080" + job?.employer.picture} />) : (<img className='company-image' src="https://www.shutterstock.com/image-vector/building-icon-260nw-377768164.jpg" />)
 
             }
 

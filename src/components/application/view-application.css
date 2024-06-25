@@ -10,6 +10,9 @@
 .view-application .label, .view-application .value{
     flex: 1;
 }
+.view-application .label{
+    font-weight: 500;
+}
 .view-application .btn-view-cv{
     font-size: 18px;
 }

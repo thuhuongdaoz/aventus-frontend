@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import './profile.css'
 import Avatar from 'antd/es/avatar/avatar';
+import { useData } from '../../DataContext';
 
 
 const validatePhoneNumber = (rule, value, callback) => {
@@ -34,6 +35,7 @@ const validatePhoneNumber = (rule, value, callback) => {
 
 
 const ProfileAdmin = () => {
+  const { updateData } = useData();
   const [errorMessage, setErrorMessage] = useState("");
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +71,7 @@ const ProfileAdmin = () => {
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
       });
-
+      updateData();
       // navigate("/login")
     } catch (error) {
       if (error.response) {
