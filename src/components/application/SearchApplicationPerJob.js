@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
     Button,
     Select,
@@ -25,7 +25,8 @@ const handleChange = (value) => {
 
 
 
-export default function SearchApplication() {
+export default function SearchApplicationPerJob() {
+    const [job, setJob] = useState(null); 
     const [majors, setMajors] = useState([]);
     const [degrees, setDegrees] = useState([]);
     const [englishLevels, setEnglishLevels] = useState([]);
@@ -42,6 +43,8 @@ export default function SearchApplication() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 10;
+
+    const { id } = useParams();
     // const listRef = useRef(null);
 
     const applicationStatuses = [
@@ -127,9 +130,20 @@ export default function SearchApplication() {
         //   .catch(error => {
         //     console.error('Error fetching jobs:', error);
         //   });
+        loadJob();
         search();
 
     }, []);
+    const loadJob = async () => {
+        const token = localStorage.getItem('token');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        const result = await axios.get(`http://localhost:8080/jobs/${id}`, { headers });
+        // console.log(result.data)
+        setJob(result.data);
+        
+      };
     // useEffect(() => {
     //     if (listRef.current) {
     //         window.scrollTo({
@@ -171,9 +185,9 @@ export default function SearchApplication() {
             Authorization: `Bearer ${token}`,
         };
         const params = {
-            employerId: localStorage.getItem('userId')
+            jobId: id,
         };
-
+        
         if (name) params.name = name;
         if (majorId) params.majorId = majorId
         if (degreeId) params.degreeId = degreeId
@@ -257,9 +271,10 @@ export default function SearchApplication() {
     return (
 
         <div className='list-job'>
-            <h1 className='list-job-title'>Đánh giá ứng viên</h1>
+            <h1 className='list-job-title'>Việc làm : {job?.name}</h1>
+            {/* <h1 className=''>Đánh giá ứng viên</h1> */}
             <div className='add-job-row'>
-                <Link to="/deepsearchapplication">
+                <Link to={`/job/${id}/deepsearchapplication`}>
                     <Button type="primary" size='large'>Trợ giúp đánh giá</Button>
                 </Link>
             </div>

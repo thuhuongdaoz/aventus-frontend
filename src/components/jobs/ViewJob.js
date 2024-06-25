@@ -108,6 +108,9 @@ export default function ViewJob() {
     loadJob()
     loadCandidate();
     checkApplied()
+    window.scrollTo({
+      top : 0
+    })
   }, []);
   const loadJob = async () => {
     const token = localStorage.getItem('token');

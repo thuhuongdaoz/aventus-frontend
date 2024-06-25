@@ -169,6 +169,7 @@ export default function LIstJob() {
         <Space size="middle">
           <Link to={`/editjob/${record.id}`}>Sửa</Link>
           <Button type="link" onClick={() => deleteJob(record.id)}>Xoá</Button>
+          <Link to={`/job/${record.id}/searchapplication`}>Danh sách ứng viên</Link>
         </Space>
       ),
     },

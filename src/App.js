@@ -18,9 +18,12 @@ import axios from 'axios';
 import 'antd-css-utilities/utility.min.css'
 import DeepSearchApplication from './components/application/DeepSearchApplication';
 import ViewApplication from './components/application/ViewApplication';
+import SearchApplicationPerJob from './components/application/SearchApplicationPerJob';
+import DeepSearchApplicationPerJob from './components/application/DeepSearchApplicationPerJob';
 
 
 function App() {
+  console.log('render app')
  
   
   return (
@@ -38,6 +41,8 @@ function App() {
             <Route path="/deepsearchjob" element={<DeepSearchJob />} />
             <Route path="/deepsearchapplication" element={<DeepSearchApplication />} />
             <Route path="/viewapplication/:id" element={<ViewApplication />} />
+            <Route path="/job/:id/searchapplication" element={<SearchApplicationPerJob />} />
+            <Route path="/job/:id/deepsearchapplication" element={<DeepSearchApplicationPerJob/>} />
             
           </Route>
           <Route path="/login" element={<Login />} />

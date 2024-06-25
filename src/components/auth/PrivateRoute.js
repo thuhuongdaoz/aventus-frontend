@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'
 
 const PrivateRoute = ({ children }) => {
+    console.log('render PrivateRoute')
     const token = localStorage.getItem('token'); // Adjust this to your token storage mechanism
 
     if (!token) {

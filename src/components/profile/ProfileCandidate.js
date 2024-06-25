@@ -149,11 +149,13 @@ const ProfileCandidate = () => {
       };
       const response = await axios.put('http://localhost:8080/candidates/myInfo', { ...values, dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null, avatar: imageUrl }, { headers });
       console.log('Update candidate info response:', response.data);
+      
+
+      // navigate("/login")
+      
       notification.success({
         message: 'Cập nhật thông tin cá nhân thành công',
       });
-
-      // navigate("/login")
     } catch (error) {
       if (error.response) {
         // Server responded with a status code other than 2xx
